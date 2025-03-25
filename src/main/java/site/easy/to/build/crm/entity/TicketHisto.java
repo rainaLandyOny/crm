@@ -3,17 +3,16 @@ package site.easy.to.build.crm.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import org.hibernate.mapping.ToOne;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "trigger_ticket")
-public class Ticket {
+@Table(name = "trigger_ticket_histo")
+public class TicketHisto {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ticket_id")
-    private int ticketId;
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(name = "subject")
     @NotBlank(message = "Subject is required")
@@ -48,24 +47,13 @@ public class Ticket {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public Ticket() {
+    @Column(name = "delete_at")
+    private LocalDateTime deleteAt;
+
+    public TicketHisto() {
     }
 
-    public static TicketHisto convertToTicketHisto(Ticket ticket) {
-        TicketHisto ticketHisto = new TicketHisto();
-        ticketHisto.setId(ticket.getTicketId());
-        ticketHisto.setSubject(ticket.getSubject());
-        ticketHisto.setDescription(ticket.getDescription());
-        ticketHisto.setStatus(ticket.getStatus());
-        ticketHisto.setPriority(ticket.getPriority());
-        ticketHisto.setManager(ticket.getManager());
-        ticketHisto.setEmployee(ticket.getEmployee());
-        ticketHisto.setCustomer(ticket.getCustomer());
-        ticketHisto.setCreatedAt(ticket.getCreatedAt());
-        return ticketHisto;
-    }
-
-    public Ticket(String subject, String description, String status, String priority, User manager, User employee, Customer customer, LocalDateTime createdAt) {
+    public TicketHisto(String subject, String description, String status, String priority, User manager, User employee, Customer customer, LocalDateTime createdAt) {
         this.subject = subject;
         this.description = description;
         this.status = status;
@@ -76,12 +64,12 @@ public class Ticket {
         this.createdAt = createdAt;
     }
 
-    public int getTicketId() {
-        return ticketId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTicketId(int ticketId) {
-        this.ticketId = ticketId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getSubject() {
@@ -146,5 +134,13 @@ public class Ticket {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getDeleteAt() {
+        return deleteAt;
+    }
+
+    public void setDeleteAt(LocalDateTime deleteAt) {
+        this.deleteAt = deleteAt;
     }
 }

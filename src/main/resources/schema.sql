@@ -505,3 +505,86 @@ CREATE TABLE IF NOT EXISTS `google_drive_file` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+CREATE TABLE IF NOT EXISTS `budget`(
+   `id` INT AUTO_INCREMENT,
+   `amount` DECIMAL(18,2)   NOT NULL,
+   `created_at` DATE NOT NULL,
+   `customer_id` INT UNSIGNED NOT NULL,
+   PRIMARY KEY(id),
+   FOREIGN KEY(`customer_id`) REFERENCES customer(`customer_id`)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `trigger_ticket_histo` (
+  `id` int unsigned NOT NULL,
+  `subject` varchar(255) DEFAULT NULL,
+  `description` text,
+  `status` varchar(50) DEFAULT NULL,
+  `priority` varchar(50) DEFAULT NULL,
+  `customer_id` int unsigned NOT NULL,
+  `manager_id` int DEFAULT NULL,
+  `employee_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `delete_at` datetime DEFAULT NULL, -- Colonne supplémentaire pour la date de suppression
+  PRIMARY KEY (`id`),
+  KEY `fk_ticket_histo_customer` (`customer_id`),
+  KEY `fk_ticket_histo_manager` (`manager_id`),
+  KEY `fk_ticket_histo_employee` (`employee_id`),
+  CONSTRAINT `fk_ticket_histo_customer` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
+  CONSTRAINT `fk_ticket_histo_manager` FOREIGN KEY (`manager_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_ticket_histo_employee` FOREIGN KEY (`employee_id`) REFERENCES `users` (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `ticket_expense` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `amount` decimal(18,2) DEFAULT NULL,
+  `created_at` datetime NOT NULL,
+  `ticket_histo_id` int unsigned NOT NULL, -- Renommer id_1 en ticket_histo_id
+  PRIMARY KEY (`id`),
+  KEY `fk_ticket_expense_histo` (`ticket_histo_id`),
+  CONSTRAINT `fk_ticket_expense_histo` FOREIGN KEY (`ticket_histo_id`) REFERENCES `trigger_ticket_histo` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE IF NOT EXISTS `trigger_lead_histo` (
+    `id` INT NOT NULL,
+    `customer_id` int unsigned NOT NULL,
+    `user_id` int DEFAULT NULL,
+    `name` varchar(255) DEFAULT NULL,
+    `phone` varchar(20) DEFAULT NULL,
+    `employee_id` int DEFAULT NULL,
+    `status` varchar(50) DEFAULT NULL,
+    `meeting_id` varchar(255) DEFAULT NULL,
+    `google_drive` tinyint(1) DEFAULT NULL,
+    `google_drive_folder_id` varchar(255) DEFAULT NULL,
+    `created_at` datetime DEFAULT NULL,  -- Correction ici : backticks et virgule ajoutés
+    `delete_at` datetime DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `meeting_info` (`meeting_id`),
+    KEY `customer_id` (`customer_id`),
+    KEY `user_id` (`user_id`),
+    KEY `employee_id` (`employee_id`),
+    CONSTRAINT `trigger_lead_histo_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`),
+    CONSTRAINT `trigger_lead_histo_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+    CONSTRAINT `trigger_lead_histo_ibfk_3` FOREIGN KEY (`employee_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Table lead_expense
+CREATE TABLE IF NOT EXISTS `lead_expense` (
+    `id` INT AUTO_INCREMENT,  -- `id` est auto-incrémenté
+    `amount` DECIMAL(18, 2) NOT NULL,
+    `created_at` datetime DEFAULT NULL,
+    `trigger_lead_histo_id` INT NOT NULL,  -- Référence à `trigger_lead_histo`
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`trigger_lead_histo_id`) REFERENCES `trigger_lead_histo`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS rate_config(
+   id INT AUTO_INCREMENT,
+   rate DECIMAL(15,2)   NOT NULL,
+   created_at DATE NOT NULL,
+   PRIMARY KEY(id)
+);
+
+INSERT INTO rate_config (rate, created_at) VALUES
+(80.00, '2023-10-01');

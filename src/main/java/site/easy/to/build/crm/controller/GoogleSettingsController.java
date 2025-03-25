@@ -80,4 +80,10 @@ public class GoogleSettingsController {
                                       HttpServletRequest request, Authentication authentication) throws IOException {
         return googleAccessService.handleGrantedAccess(session, error, authCode, state, authentication, request);
     }
+
+    @GetMapping("/data-setting")
+    public String showDataSettingsPage(Model model) {
+        // Ici, tu peux ajouter des attributs à ton modèle si nécessaire
+        return "/donnee/data"; // Retourne la vue data.html
+    }
 }
