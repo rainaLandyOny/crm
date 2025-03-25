@@ -587,4 +587,4 @@ CREATE TABLE IF NOT EXISTS rate_config(
 );
 
 INSERT INTO rate_config (rate, created_at) VALUES
-(80.00, '2023-10-01');
+(50.00, '2023-10-01');
