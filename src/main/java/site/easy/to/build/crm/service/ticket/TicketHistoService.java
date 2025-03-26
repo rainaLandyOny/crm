@@ -11,5 +11,6 @@ public interface TicketHistoService {
 
     List<TicketHisto> findAll();
 
+    List<TicketHisto> getAll();
     TicketHisto findByTicketHistoId(int id);
 }

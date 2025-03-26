@@ -23,4 +23,6 @@ public interface TicketHistoRepository extends JpaRepository<TicketHisto, Intege
             @Param("date2") LocalDateTime date2);
             
     public List<TicketHisto> findByCustomerCustomerId(int customerId);
+    
+    List<TicketHisto> findByDeleteAtIsNull();
 }

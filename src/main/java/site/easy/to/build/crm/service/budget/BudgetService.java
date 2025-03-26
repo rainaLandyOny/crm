@@ -2,6 +2,7 @@ package site.easy.to.build.crm.service.budget;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,6 +72,14 @@ public class BudgetService {
         }
         return totalBudget;
     }
+
+
+
+          public List<Budget> getTriggerLeadHistoBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return budgetRepository.findBudgetsBetweenDates(startDate, endDate);
+    }
+
+
 
     public BigDecimal getRealBudget(int customerId) {
         return getTotalCustomerBudgets(customerId).subtract(expenseService.getCustomerDepense(customerId));

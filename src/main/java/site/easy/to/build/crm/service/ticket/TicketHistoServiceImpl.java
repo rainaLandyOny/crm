@@ -16,6 +16,12 @@ public class TicketHistoServiceImpl implements TicketHistoService{
     }
 
     @Override
+    public List<TicketHisto> getAll() {
+        return ticketHistoRepository.findByDeleteAtIsNull();
+    }
+
+
+    @Override
     public TicketHisto save(TicketHisto ticketHisto){
         return  ticketHistoRepository.save(ticketHisto);
     }

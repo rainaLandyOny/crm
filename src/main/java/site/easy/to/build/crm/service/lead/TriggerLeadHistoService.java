@@ -7,5 +7,27 @@ import java.util.List;
 public interface TriggerLeadHistoService {
     public TriggerLeadHisto save(TriggerLeadHisto triggerLeadHisto);
 
-    List<TriggerLeadHisto> getBetweenDate(LocalDateTime date1, LocalDateTime date2);
+    
+    public void softDelete(Integer id);
+    List<TriggerLeadHisto> getTriggerLeadHistoBetweenDates(LocalDateTime startDate, LocalDateTime endDate);
+
+    public List<TriggerLeadHisto> findByCreatedAtBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    TriggerLeadHisto getById(Integer id);
+
+
+    List<TriggerLeadHisto> getAll();
+
+
+    TriggerLeadHisto update(Integer id, TriggerLeadHisto triggerLeadHisto);
+
+
+    void delete(Integer id);
+
+
+
+
+
+
+    
 }
